@@ -154,7 +154,7 @@ ul li {
 	display: inline-block;
 }
 .navigation a {
-	color: rgba(255, 255, 255, 0.75);
+	color: rgba(255, 255, 255, 1);
 	font-size: 13px;
 	font-weight: 700;
 	margin-left: 40px;
@@ -348,6 +348,10 @@ ul li {
 ========================================================================== */
 .intro {
 	background-color: #00aeda;
+}
+.intro h1 {
+	color: #fff;
+	margin-top: 0;
 }
 .intro h3 {
 	color: #fff;
