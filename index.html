@@ -49,6 +49,7 @@
           <li><a href="#teams">INTEGRANTES</a></li>
           <li><a href="#foaf">ESTRUCTURA FOAF</a></li>
           <li><a href="#academic">EJEMPLO DE INDIVIDUOS FOAF</a></li>
+          <li><a href="#production">FOAF EN PRODUCCIÓN</a></li>
         </ul>
       </nav>
       <a href="#" class="nav-toggle">Menu<span></span></a> </div>
@@ -137,7 +138,6 @@
 
 <!-- academic section -->
 <section id="academic" class="services service-section">
-  <h2>Agregación y Relación de Nodos Persona</h2>
   <div class="container">
     <div class="row">
       <div class="row col-sm-12">
@@ -162,14 +162,6 @@
                 <button type="submit" class="btn btn-default">Add Person</button>
             </form>
         </div>
-          <div class="col-sm-4">
-              <pre class = "doc1" id="DocumentContent" style="margin-top: 24px;"></pre>
-          </div>
-          <div class="col-sm-4">
-              <div id="svg-body" class="panel-body" style="margin-top: 8px;"></div>
-          </div>
-      </div>
-      <div class="row col-sm-12">
         <div class="col-sm-4">
              <form id="CreateKnowRelationForm">
                 <div class="form-group">
@@ -183,12 +175,34 @@
                 <button type="submit" class="btn btn-default">Create Connection</button>
             </form>
         </div>
+        <div class="col-sm-4">
+             <form id="CreatePersonForm2">
+                <div class="form-group">
+                    <label for="PersonFile">Person File:</label>
+                    <input type="file" class="form-control" id="PersonFile">
+                </div>
+                <button type="submit" class="btn btn-default">Create</button>
+            </form>
+        </div>
       </div>
     </div>
   </div>
 </section>
 <!-- academic section -->
-
+<section id="production" class="services service-section">
+  <div class="container">
+    <div class="row">
+      <div class="row col-sm-12">
+        <div class="col-sm-6">
+            <pre class = "doc1" id="DocumentContent" style="margin-top: 24px;"></pre>
+        </div>
+        <div class="col-sm-6">
+            <div id="svg-body" class="panel-body" style="margin-top: 8px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- Footer section -->
 <footer class="footer" align="center" >
   <div class="footer-top section">
@@ -199,15 +213,12 @@
     </div>
   </div>
 </footer>
-<!-- Footer section -->
-
-<!-- JS FILES -->
 <script>
     var svg = d3.select("#svg-body")
                 .append("svg")
-				.attr("width", 400)
+				.attr("width", 600)
 				.attr("height", 300);
-	var force = d3.layout.force().size([400, 300]);
+	  var force = d3.layout.force().size([600, 300]);
     var graph;
     var triples;
     var store = $rdf.graph()
@@ -225,7 +236,13 @@
         updateRDFGraphs();
         event.preventDefault();
     });
-
+    $('#CreatePersonForm2').submit(function( event ) {
+		ReadFile();
+        //AddFoafPersonToD3("Diego");
+        //AddFOAFKnowToXML();
+        //updateRDFGraphs();
+        event.preventDefault();
+    });
     function AddFoafKnowToD3(){
         var firtsPersonName  = $('#FirstPerson').val();
         var secondPersonName = $('#SecondPerson').val();
@@ -320,10 +337,95 @@
         this.object="";
         return this;
     }
+    function ReadFile() {
+  	    var fileInput = document.getElementById("PersonFile");
+          var reader = new FileReader();
+          reader.onload = function () {
+          	var csv = event.target.result;
+        		var data = processData(csv);
+        		$(data).each(function(index,elem){
+  				//console.log(elem);
+  				AddFoafPersonToD33(elem);
+  				AddFOAFKnowToXML3(elem);
+        		});
+        		updateRDFGraphs();
+          };
+          // start reading the file. When it is done, calls the onload event defined above.
+          reader.readAsBinaryString(fileInput.files[0]);
+  	}
+
+  	function processData(csv) {
+          var allTextLines = csv.split(/\r\n|\n/);
+          var people = [];
+          var headers = [];
+          for (var i=0; i<allTextLines.length; i++) {
+          	if (i == 0) {
+          		headers = allTextLines[i].split(',');
+          		continue;
+          	}
+              var data = allTextLines[i].split(',');
+              var tarr = [];
+              var obj = {};
+              for (var j=0; j<data.length; j++) {
+              	var index = headers[j];
+                  obj[index] = data[j];
+              }
+              people.push(obj);
+          }
+        	return people;
+      }
+
+      function AddFoafPersonToD33(person){
+          var personGivenName  = person.GivenName
+          var personFamilyName  = person.FamilyName
+          var personName  = personGivenName + " " + personFamilyName;
+          var personHomepage = person.Homepage;
+          var personNick = person.Nick;
+          var firtsPerson = FOAF.PERSON(personGivenName);
+          triple = new Triple();
+          triple.subject = firtsPerson.value;
+          triple.predicate = FOAF.NAME.value;
+          triple.object = personName;
+          triples.push(triple);
+          triple = new Triple();
+          triple.subject = firtsPerson.value;
+          triple.predicate = FOAF.GIVEN_NAME.value;
+          triple.object = personGivenName;
+          triples.push(triple);
+          triple = new Triple();
+          triple.subject = firtsPerson.value;
+          triple.predicate = FOAF.FAMILY_NAME.value;
+          triple.object = personFamilyName;
+          triples.push(triple);
+          triple = new Triple();
+          triple.subject = firtsPerson.value;
+          triple.predicate = FOAF.HOME_PAGE.value;
+          triple.object = personHomepage
+          triples.push(triple);
+          triple = new Triple();
+          triple.subject = firtsPerson.value;
+          triple.predicate = FOAF.NICK.value;
+          triple.object = personNick
+          triples.push(triple);
+      }
+
+      function AddFOAFKnowToXML3(person){
+          var personGivenName  = person.GivenName;
+          var personFamilyName  = person.FamilyName;
+          var personName  = personGivenName + " " + personFamilyName;
+          var personHomepage = person.Homepage;
+          var personNick = person.Nick;
+          var person = FOAF.PERSON(personGivenName);
+          store.add(person, FOAF.NAME, FOAF.STRING(personName));
+          store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
+          store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
+          store.add(person, FOAF.HOME_PAGE, FOAF.STRING(personHomepage));
+          store.add(person, FOAF.NICK, FOAF.STRING(personNick));
+      }
 
 </script>
-
-
+<!-- Footer section -->
+<!-- JS FILES -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.flexslider-min.js"></script>
