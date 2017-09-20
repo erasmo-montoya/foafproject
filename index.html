@@ -10,7 +10,7 @@
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ingeniería y Gestión del Conocimiento - Trabajo 1</title>
+<title>Lexis - Minimal, Corporate Bootstrap template</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/flexslider.css">
 <link rel="stylesheet" href="css/jquery.fancybox.css">
@@ -19,7 +19,12 @@
 <link rel="stylesheet" href="css/font-icon.css">
 <link rel="stylesheet" href="css/animate.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<link rel="stylesheet" href="./styles/graph.css">
+<script src="./js/rdflib.min.js"></script>
+<script src="./js/FOAF.js"></script>
+<script src="./js/graph.js"></script>
 <!-- Google Analytics Script -->
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -37,7 +42,7 @@
 <!-- header section -->
 <section class="foaftitle" role="foaftitle">
   <header id="header">
-    <div class="header-content clearfix"> 
+    <div class="header-content clearfix">
       <a class="logo" href="index.html">Home</a>
       <nav class="navigation" role="navigation">
         <ul class="primary-nav">
@@ -57,11 +62,11 @@
         <br>
         <br>
         <h1>Grupo 2</h1>
-      <!-- banner text --> 
+      <!-- banner text -->
     </div>
   </div>
 </section>
-<!-- header section --> 
+<!-- header section -->
 
 <!-- our team section -->
 <section id="teams" class="section teams">
@@ -120,7 +125,7 @@
     </div>
   </div>
 </section>
-<!-- our team section --> 
+<!-- our team section -->
 
 <!-- foaf section -->
 <section id="foaf" class="foaf">
@@ -129,91 +134,54 @@
         <iframe width="560" height="315" src="http://visualdataweb.de/webvowl/" marginwidth="50" frameborder="0" allowfullscreen></iframe>
     </div>
 </section>
-<!-- foaf section --> 
+<!-- foaf section -->
 
 <!-- academic section -->
 <section id="academic" class="services service-section">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-strategy"></span>
-        <div class="services-content">
-          <h5>Strategy & Consulting</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
+      <div class="row col-sm-12">
+        <div class="col-sm-4">
+             <form id="CreatePersonForm">
+                <div class="form-group">
+                    <label for="PersonGivenName">Person Given Name:</label>
+                    <input type="text" class="form-control" id="PersonGivenName">
+                </div>
+                <div class="form-group">
+                    <label for="PersonFamilyName">Person Family Name:</label>
+                    <input type="text" class="form-control" id="PersonFamilyName">
+                </div>
+                <div class="form-group">
+                    <label for="PersonNick">Person Nick:</label>
+                    <input type="text" class="form-control" id="PersonNick">
+                </div>
+                <div class="form-group">
+                    <label for="PersonHomepage">Person Homepage:</label>
+                    <input type="text" class="form-control" id="PersonHomepage">
+                </div>
+                <button type="submit" class="btn btn-default">Add Person</button>
+            </form>
         </div>
+          <div class="col-sm-4">
+              <pre class = "doc1" id="DocumentContent" style="margin-top: 24px;"></pre>
+          </div>
+          <div class="col-sm-4">
+              <div id="svg-body" class="panel-body" style="margin-top: 8px;"></div>
+          </div>
       </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-briefcase"></span>
-        <div class="services-content">
-          <h5>corporate identity</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-tools"></span>
-        <div class="services-content">
-          <h5>web design and development</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-genius"></span>
-        <div class="services-content">
-          <h5>Branding</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-megaphone"></span>
-        <div class="services-content">
-          <h5>Digital marketing</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-trophy"></span>
-        <div class="services-content">
-          <h5>Promotion material</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- academic section -->
-
-<!-- production section -->
-<section id="production" class="services service-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-strategy"></span>
-        <div class="services-content">
-          <h5>Strategy & Consulting</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-briefcase"></span>
-        <div class="services-content">
-          <h5>corporate identity</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-tools"></span>
-        <div class="services-content">
-          <h5>web design and development</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-genius"></span>
-        <div class="services-content">
-          <h5>Branding</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-megaphone"></span>
-        <div class="services-content">
-          <h5>Digital marketing</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 services text-center"> <span class="icon icon-trophy"></span>
-        <div class="services-content">
-          <h5>Promotion material</h5>
-          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Donec nulla non metus.</p>
+      <div class="row col-sm-12">
+        <div class="col-sm-4">
+             <form id="CreateKnowRelationForm">
+                <div class="form-group">
+                    <label for="FirstPerson">First Person:</label>
+                    <input type="text" class="form-control" id="FirstPerson">
+                </div>
+                <div class="form-group">
+                    <label for="SecondPerson">First Person:</label>
+                    <input type="text" class="form-control" id="SecondPerson">
+                </div>
+                <button type="submit" class="btn btn-default">Create Connection</button>
+            </form>
         </div>
       </div>
     </div>
@@ -231,15 +199,135 @@
     </div>
   </div>
 </footer>
-<!-- Footer section --> 
-<!-- JS FILES --> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
-<script src="js/bootstrap.min.js"></script> 
-<script src="js/jquery.flexslider-min.js"></script> 
-<script src="js/jquery.fancybox.pack.js"></script> 
-<script src="js/retina.min.js"></script> 
-<script src="js/modernizr.js"></script> 
-<script src="js/main.js"></script> 
+<script>
+    var svg = d3.select("#svg-body")
+                .append("svg")
+				.attr("width", 400)
+				.attr("height", 300);
+	var force = d3.layout.force().size([400, 300]);
+    var graph;
+    var triples;
+    var store = $rdf.graph()
+    triples = [];
+
+    $('#CreateKnowRelationForm').submit(function( event ) {
+        AddFoafKnowToD3();
+        AddFOAFKnowToXML();
+        updateRDFGraphs();
+        event.preventDefault();
+    });
+    $('#CreatePersonForm').submit(function( event ) {
+        AddFoafKnowToD32();
+        AddFOAFKnowToXML2();
+        updateRDFGraphs();
+        event.preventDefault();
+    });
+
+    function AddFoafKnowToD3(){
+        var firtsPersonName  = $('#FirstPerson').val();
+        var secondPersonName = $('#SecondPerson').val();
+        var firtsPerson = FOAF.PERSON(firtsPersonName);
+        var secondPerson = FOAF.PERSON(secondPersonName);
+        var triple = new Triple();
+        triple.subject = firtsPerson.value;
+        triple.predicate = FOAF.KNOWS.value;
+        triple.object = secondPerson.value;
+        triples.push(triple);
+        triple = new Triple();
+        triple.subject = firtsPerson.value;
+        triple.predicate = FOAF.NAME.value;
+        triple.object = firtsPersonName
+        triples.push(triple);
+        triple = new Triple();
+        triple.subject = secondPerson.value;
+        triple.predicate = FOAF.NAME.value;
+        triple.object = secondPersonName
+        triples.push(triple);
+    }
+
+
+    function AddFoafKnowToD32(){
+        var personGivenName  = $('#PersonGivenName').val();
+        var personFamilyName  = $('#PersonFamilyName').val();
+        var personName  = personGivenName + " " + personFamilyName;//$('#PersonName').val();
+        var personHomepage = $('#PersonHomepage').val();
+        var personNick = $('#PersonNick').val();
+        var firtsPerson = FOAF.PERSON(personGivenName);
+        triple = new Triple();
+        triple.subject = firtsPerson.value;
+        triple.predicate = FOAF.NAME.value;
+        triple.object = personName
+        triples.push(triple);
+        triple = new Triple();
+        triple.subject = firtsPerson.value;
+        triple.predicate = FOAF.GIVEN_NAME.value;
+        triple.object = personGivenName
+        triples.push(triple);
+        triple = new Triple();
+        triple.subject = firtsPerson.value;
+        triple.predicate = FOAF.FAMILY_NAME.value;
+        triple.object = personFamilyName
+        triples.push(triple);
+        triple = new Triple();
+        triple.subject = firtsPerson.value;
+        triple.predicate = FOAF.HOME_PAGE.value;
+        triple.object = personHomepage
+        triples.push(triple);
+        triple = new Triple();
+        triple.subject = firtsPerson.value;
+        triple.predicate = FOAF.NICK.value;
+        triple.object = personNick
+        triples.push(triple);
+    }
+    function AddFOAFKnowToXML(){
+        var firtsPersonName  = $('#FirstPerson').val();
+        var secondPersonName = $('#SecondPerson').val();
+        var firtsPerson = FOAF.PERSON(firtsPersonName);
+        var secondPerson = FOAF.PERSON(secondPersonName);
+        store.add(firtsPerson, FOAF.NAME, FOAF.STRING(firtsPersonName));
+        store.add(secondPerson, FOAF.NAME, FOAF.STRING(secondPersonName));
+        store.add(firtsPerson,FOAF.KNOWS,secondPerson);
+    }
+
+    function AddFOAFKnowToXML2(){
+        var personGivenName  = $('#PersonGivenName').val();
+        var personFamilyName  = $('#PersonFamilyName').val();
+        var personName  = personGivenName + " " + personFamilyName;
+        var personHomepage = $('#PersonHomepage').val();
+        var personNick = $('#PersonNick').val();
+        var person = FOAF.PERSON(personGivenName);
+        store.add(person, FOAF.NAME, FOAF.STRING(personName));
+        store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
+        store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
+        store.add(person, FOAF.HOME_PAGE, FOAF.STRING(personHomepage));
+        store.add(person, FOAF.NICK, FOAF.STRING(personNick));
+    }
+
+    function updateRDFGraphs(){
+        $rdf.serialize(undefined, store, undefined, 'application/rdf+xml', function(err, str) {
+            $('#DocumentContent').text(str);
+        });
+        graph = triplesToGraph(triples);
+        update();
+    }
+
+    function Triple(){
+        this.subject="";
+        this.predicate="";
+        this.object="";
+        return this;
+    }
+
+</script>
+<!-- Footer section -->
+<!-- JS FILES -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.flexslider-min.js"></script>
+<script src="js/jquery.fancybox.pack.js"></script>
+<script src="js/retina.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/main.js"></script>
 <script type="text/javascript" src="js/jquery.contact.js"></script>
 </body>
 </html>
