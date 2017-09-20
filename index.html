@@ -336,6 +336,20 @@
         store.add(person, FOAF.NICK, FOAF.STRING(personNick));
     }
 
+    function AddFOAFPersonToXML3(person){
+        var personGivenName  = person.GivenName;
+        var personFamilyName  = person.FamilyName;
+        var personName  = personGivenName + " " + personFamilyName;
+        var personHomepage = person.Homepage;
+        var personNick = person.Nick;
+        var person = FOAF.PERSON(person.Id);
+        store.add(person, FOAF.NAME, FOAF.STRING(personName));
+        store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
+        store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
+        store.add(person, FOAF.HOME_PAGE, FOAF.STRING(personHomepage));
+        store.add(person, FOAF.NICK, FOAF.STRING(personNick));
+    }
+
     function updateRDFGraphs(){
         $rdf.serialize(undefined, store, undefined, 'application/rdf+xml', function(err, str) {
             $('#DocumentContent').text(str);
@@ -360,7 +374,7 @@
   				//console.log(elem);
           elem.Id = elem.Id + "_" + elem.GivenName + "_" + getHashId(5);
   				AddFoafPersonToD33(elem);
-  				AddFOAFKnowToXML3(elem);
+  				AddFOAFPersonToXML3(elem);
         		});
         		updateRDFGraphs();
           };
@@ -421,20 +435,6 @@
           triple.predicate = FOAF.NICK.value;
           triple.object = personNick;
           triples.push(triple);
-      }
-
-      function AddFOAFPersonToXML3(person){
-          var personGivenName  = person.GivenName;
-          var personFamilyName  = person.FamilyName;
-          var personName  = personGivenName + " " + personFamilyName;
-          var personHomepage = person.Homepage;
-          var personNick = person.Nick;
-          var person = FOAF.PERSON(person.Id);
-          store.add(person, FOAF.NAME, FOAF.STRING(personName));
-          store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
-          store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
-          store.add(person, FOAF.HOME_PAGE, FOAF.STRING(personHomepage));
-          store.add(person, FOAF.NICK, FOAF.STRING(personNick));
       }
 
 </script>
