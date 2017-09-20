@@ -181,7 +181,7 @@
                     <label for="PersonFile">Person File:</label>
                     <input type="file" class="form-control" id="PersonFile">
                 </div>
-                <button type="submit" class="btn btn-default">Create</button>
+                <button type="submit" class="btn btn-default">Upload Persons</button>
             </form>
         </div>
       </div>
@@ -195,6 +195,9 @@
       <div class="row col-sm-12">
         <div class="col-sm-6">
             <pre class = "doc1" id="DocumentContent" style="margin-top: 24px;"></pre>
+            <form id="DownloadXmlForm">
+                <button type="submit" class="btn btn-default">Download</button>
+            </form>
         </div>
         <div class="col-sm-6">
             <div id="svg-body" class="panel-body" style="margin-top: 8px;"></div>
@@ -223,6 +226,7 @@
     var triples;
     var store = $rdf.graph()
     triples = [];
+    var personHash = "";
 
     $('#CreateKnowRelationForm').submit(function( event ) {
         AddFoafKnowToD3();
@@ -231,6 +235,7 @@
         event.preventDefault();
     });
     $('#CreatePersonForm').submit(function( event ) {
+        personHash = getHashId(5);
         AddFoafKnowToD32();
         AddFOAFKnowToXML2();
         updateRDFGraphs();
@@ -241,6 +246,12 @@
         //AddFoafPersonToD3("Diego");
         //AddFOAFKnowToXML();
         //updateRDFGraphs();
+        event.preventDefault();
+    });
+    $('#DownloadXmlForm').submit(function( event ) {
+		$rdf.serialize(undefined, store, undefined, 'application/rdf+xml', function(err, str) {
+        	download("my_foaf_document.rdf",str);
+        });
         event.preventDefault();
     });
     function AddFoafKnowToD3(){
@@ -272,7 +283,7 @@
         var personName  = personGivenName + " " + personFamilyName;//$('#PersonName').val();
         var personHomepage = $('#PersonHomepage').val();
         var personNick = $('#PersonNick').val();
-        var firtsPerson = FOAF.PERSON(personGivenName);
+        var firtsPerson = FOAF.PERSON(personGivenName + "_" + personHash);
         triple = new Triple();
         triple.subject = firtsPerson.value;
         triple.predicate = FOAF.NAME.value;
@@ -299,6 +310,7 @@
         triple.object = personNick
         triples.push(triple);
     }
+
     function AddFOAFKnowToXML(){
         var firtsPersonName  = $('#FirstPerson').val();
         var secondPersonName = $('#SecondPerson').val();
@@ -315,7 +327,7 @@
         var personName  = personGivenName + " " + personFamilyName;
         var personHomepage = $('#PersonHomepage').val();
         var personNick = $('#PersonNick').val();
-        var person = FOAF.PERSON(personGivenName);
+        var person = FOAF.PERSON(personGivenName + "_" + personHash);
         store.add(person, FOAF.NAME, FOAF.STRING(personName));
         store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
         store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
@@ -345,6 +357,7 @@
         		var data = processData(csv);
         		$(data).each(function(index,elem){
   				//console.log(elem);
+          elem.Id = elem.Id + "_" + elem.GivenName + "_" + getHashId(5);
   				AddFoafPersonToD33(elem);
   				AddFOAFKnowToXML3(elem);
         		});
@@ -381,7 +394,7 @@
           var personName  = personGivenName + " " + personFamilyName;
           var personHomepage = person.Homepage;
           var personNick = person.Nick;
-          var firtsPerson = FOAF.PERSON(personGivenName);
+          var firtsPerson = FOAF.PERSON(person.Id);
           triple = new Triple();
           triple.subject = firtsPerson.value;
           triple.predicate = FOAF.NAME.value;
@@ -400,22 +413,22 @@
           triple = new Triple();
           triple.subject = firtsPerson.value;
           triple.predicate = FOAF.HOME_PAGE.value;
-          triple.object = personHomepage
+          triple.object = personHomepage;
           triples.push(triple);
           triple = new Triple();
           triple.subject = firtsPerson.value;
           triple.predicate = FOAF.NICK.value;
-          triple.object = personNick
+          triple.object = personNick;
           triples.push(triple);
       }
 
-      function AddFOAFKnowToXML3(person){
+      function AddFOAFPersonToXML3(person){
           var personGivenName  = person.GivenName;
           var personFamilyName  = person.FamilyName;
           var personName  = personGivenName + " " + personFamilyName;
           var personHomepage = person.Homepage;
           var personNick = person.Nick;
-          var person = FOAF.PERSON(personGivenName);
+          var person = FOAF.PERSON(person.Id);
           store.add(person, FOAF.NAME, FOAF.STRING(personName));
           store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
           store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
