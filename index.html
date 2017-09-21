@@ -19,12 +19,13 @@
 <link rel="stylesheet" href="css/font-icon.css">
 <link rel="stylesheet" href="css/animate.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="./styles/graph.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js"></script>
-<link rel="stylesheet" href="./styles/graph.css">
 <script src="./js/rdflib.min.js"></script>
 <script src="./js/FOAF.js"></script>
 <script src="./js/graph.js"></script>
+<script src="./js/utils.js"></script>
 <!-- Google Analytics Script -->
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -76,7 +77,7 @@
         <div class="person"><img src="images/team-1.jpg" alt="" class="img-responsive">
           <div class="person-content">
             <h4>Daniel Carbajal</h4>
-            <h5 class="role">TheVedettesMan</h5>
+            <h5 class="role">TheBackEndMan</h5>
           </div>
           <ul class="social-icons clearfix">
           </ul>
@@ -86,7 +87,7 @@
         <div class="person"> <img src="images/team-2.jpg" alt="" class="img-responsive">
           <div class="person-content">
             <h4>Erasmo Gómez</h4>
-            <h5 class="role">ElYopi</h5>
+            <h5 class="role">SimeplementeErasmo</h5>
           </div>
           <ul class="social-icons clearfix">
           </ul>
@@ -96,7 +97,7 @@
         <div class="person"> <img src="images/team-3.jpg" alt="" class="img-responsive">
           <div class="person-content">
             <h4>Diego Salas</h4>
-            <h5 class="role">ElYow</h5>
+            <h5 class="role">Topo</h5>
           </div>
           <ul class="social-icons clearfix">
           </ul>
@@ -106,7 +107,7 @@
         <div class="person"> <img src="images/team-4.jpg" alt="" class="img-responsive">
           <div class="person-content">
             <h4>Rodolfo Gálvez</h4>
-            <h5 class="role">ElQueSeLaCome(segun Erasmo :P)</h5>
+            <h5 class="role">Rodo</h5>
           </div>
           <ul class="social-icons clearfix">
           </ul>
@@ -166,11 +167,17 @@
              <form id="CreateKnowRelationForm">
                 <div class="form-group">
                     <label for="FirstPerson">First Person:</label>
-                    <input type="text" class="form-control" id="FirstPerson">
+                    <!--<input type="" class="form-control" id="FirstPerson" class="person-input">-->
+                    <select id="FirstPerson" class="person-select">
+    					<option>No one here.</option>
+  					</select>
                 </div>
                 <div class="form-group">
-                    <label for="SecondPerson">First Person:</label>
-                    <input type="text" class="form-control" id="SecondPerson">
+                    <label for="SecondPerson">Second Person:</label>
+                    <!--<input type="text" class="form-control" id="SecondPerson" class="person-input">-->
+                    <select id="SecondPerson" class="person-select">
+    					<option>No one here.</option>
+  					</select>
                 </div>
                 <button type="submit" class="btn btn-default">Create Connection</button>
             </form>
@@ -227,13 +234,19 @@
     var store = $rdf.graph()
     triples = [];
     var personHash = "";
-
+	var availableTags = [];
+    
     $('#CreateKnowRelationForm').submit(function( event ) {
-        AddFoafKnowToD3();
-        AddFOAFKnowToXML();
+    	var firstPerson = $("#FirstPerson").find(":selected").attr("value");
+    	var secondPerson = $("#SecondPerson").find(":selected").attr("value");
+    	//console.log(firstPerson);
+    	//console.log(secondPerson);
+        AddFoafKnowToD3(firstPerson, secondPerson);
+        AddFOAFKnowToXML(firstPerson, secondPerson);
         updateRDFGraphs();
         event.preventDefault();
     });
+    
     $('#CreatePersonForm').submit(function( event ) {
         personHash = getHashId(5);
         AddFoafKnowToD32();
@@ -241,11 +254,9 @@
         updateRDFGraphs();
         event.preventDefault();
     });
+    
     $('#CreatePersonForm2').submit(function( event ) {
 		ReadFile();
-        //AddFoafPersonToD3("Diego");
-        //AddFOAFKnowToXML();
-        //updateRDFGraphs();
         event.preventDefault();
     });
     $('#DownloadXmlForm').submit(function( event ) {
@@ -254,25 +265,28 @@
         });
         event.preventDefault();
     });
-    function AddFoafKnowToD3(){
-        var firtsPersonName  = $('#FirstPerson').val();
+    
+    function AddAvailableTags() {
+        $(".person-select" ).html("");
+    	$(triples).each(function(index, triple) { 
+        	if (triple.predicate == FOAF.NAME.value) {	
+        		console.log(triple.object);
+        		$(".person-select" ).append("<option value=\"" + triple.subject + "\">"+ triple.object +"</option>");
+        		availableTags.push(triple.object);
+        	}
+        });
+    }
+    	
+  
+    function AddFoafKnowToD3(firstPerson, secondPerson){
+        /*var firtsPersonName  = $('#FirstPerson').val();
         var secondPersonName = $('#SecondPerson').val();
         var firtsPerson = FOAF.PERSON(firtsPersonName);
-        var secondPerson = FOAF.PERSON(secondPersonName);
+        var secondPerson = FOAF.PERSON(secondPersonName);*/
         var triple = new Triple();
-        triple.subject = firtsPerson.value;
+        triple.subject = firstPerson;
         triple.predicate = FOAF.KNOWS.value;
-        triple.object = secondPerson.value;
-        triples.push(triple);
-        triple = new Triple();
-        triple.subject = firtsPerson.value;
-        triple.predicate = FOAF.NAME.value;
-        triple.object = firtsPersonName
-        triples.push(triple);
-        triple = new Triple();
-        triple.subject = secondPerson.value;
-        triple.predicate = FOAF.NAME.value;
-        triple.object = secondPersonName
+        triple.object = secondPerson;
         triples.push(triple);
     }
 
@@ -311,14 +325,16 @@
         triples.push(triple);
     }
 
-    function AddFOAFKnowToXML(){
-        var firtsPersonName  = $('#FirstPerson').val();
+    function AddFOAFKnowToXML(firstPerson, secondPerson){
+        /*var firtsPersonName  = $('#FirstPerson').val();
         var secondPersonName = $('#SecondPerson').val();
         var firtsPerson = FOAF.PERSON(firtsPersonName);
         var secondPerson = FOAF.PERSON(secondPersonName);
         store.add(firtsPerson, FOAF.NAME, FOAF.STRING(firtsPersonName));
-        store.add(secondPerson, FOAF.NAME, FOAF.STRING(secondPersonName));
-        store.add(firtsPerson,FOAF.KNOWS,secondPerson);
+        store.add(secondPerson, FOAF.NAME, FOAF.STRING(secondPersonName));*/
+        var fp = $rdf.sym(firstPerson);
+        var sp = $rdf.sym(secondPerson);
+        store.add(fp,FOAF.KNOWS,sp);
     }
 
     function AddFOAFKnowToXML2(){
@@ -335,7 +351,22 @@
         store.add(person, FOAF.NICK, FOAF.STRING(personNick));
     }
 
+    function AddFOAFPersonToXML3(person){
+        var personGivenName  = person.GivenName;
+        var personFamilyName  = person.FamilyName;
+        var personName  = personGivenName + " " + personFamilyName;
+        var personHomepage = person.Homepage;
+        var personNick = person.Nick;
+        var person = FOAF.PERSON(person.Id);
+        store.add(person, FOAF.NAME, FOAF.STRING(personName));
+        store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
+        store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
+        store.add(person, FOAF.HOME_PAGE, FOAF.STRING(personHomepage));
+        store.add(person, FOAF.NICK, FOAF.STRING(personNick));
+    }
+
     function updateRDFGraphs(){
+        AddAvailableTags();
         $rdf.serialize(undefined, store, undefined, 'application/rdf+xml', function(err, str) {
             $('#DocumentContent').text(str);
         });
@@ -359,7 +390,7 @@
   				//console.log(elem);
           elem.Id = elem.Id + "_" + elem.GivenName + "_" + getHashId(5);
   				AddFoafPersonToD33(elem);
-  				AddFOAFKnowToXML3(elem);
+  				AddFOAFPersonToXML3(elem);
         		});
         		updateRDFGraphs();
           };
@@ -420,20 +451,6 @@
           triple.predicate = FOAF.NICK.value;
           triple.object = personNick;
           triples.push(triple);
-      }
-
-      function AddFOAFPersonToXML3(person){
-          var personGivenName  = person.GivenName;
-          var personFamilyName  = person.FamilyName;
-          var personName  = personGivenName + " " + personFamilyName;
-          var personHomepage = person.Homepage;
-          var personNick = person.Nick;
-          var person = FOAF.PERSON(person.Id);
-          store.add(person, FOAF.NAME, FOAF.STRING(personName));
-          store.add(person, FOAF.GIVEN_NAME, FOAF.STRING(personGivenName));
-          store.add(person, FOAF.FAMILY_NAME, FOAF.STRING(personFamilyName));
-          store.add(person, FOAF.HOME_PAGE, FOAF.STRING(personHomepage));
-          store.add(person, FOAF.NICK, FOAF.STRING(personNick));
       }
 
 </script>
